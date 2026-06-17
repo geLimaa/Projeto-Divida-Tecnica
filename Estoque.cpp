@@ -10,6 +10,9 @@
 using namespace std;
 
 string SENHA_ADMIN = "1234";  // senha do admin
+                            
+const double LIMITE_DESCONTO = 100.0;
+const double DESCONTO = 0.10;
 
 struct Produto {
     string nome;
@@ -36,11 +39,9 @@ double vender(string nome, int quantidade) {
         if (produtos[i].nome == nome) {
             if (produtos[i].qtd >= quantidade) {
                 produtos[i].qtd = produtos[i].qtd - quantidade;
-                double total = produtos[i].preco * quantidade;
-                // desconto pra compras grandes
-                if (total > 100) {
-                    total = total - total * 0.1;
-                }
+
+                double total = calcular_total(produtos[i].preco, quantidade);
+
                 cout << "Venda realizada. Total: " << total << endl;
                 return total;
             } else {
@@ -55,11 +56,11 @@ double vender(string nome, int quantidade) {
 
 // calcula o total de uma compra (usado no relatorio)
 double calcular_total(double preco, int quantidade) {
-    double t = preco * quantidade;
-    if (t > 200) {              // limite diferente do usado em vender()
-        t = t - t * 0.15;       // desconto diferente do usado em vender()
+    double total = preco * quantidade;
+    if (total > LIMITE_DESCONTO) {              // limite diferente do usado em vender()
+        total = total - total * DESCONTO;       // desconto diferente do usado em vender()
     }
-    return t;
+    return total;
 }
 
 void listar() {
